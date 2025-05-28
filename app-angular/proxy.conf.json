@@ -1,0 +1,8 @@
+{
+  "/ws": {
+    "target": "http://websocket-server:8080",
+    "ws": true,
+    "secure": false,
+    "changeOrigin": true
+  }
+}

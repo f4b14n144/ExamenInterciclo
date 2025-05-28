@@ -1,0 +1,31 @@
+
+FROM node:18-alpine as build
+
+WORKDIR /app
+
+COPY package*.json ./
+COPY angular.json ./
+COPY proxy.conf.json ./  
+
+RUN npm install
+
+COPY . .
+
+
+RUN npm run build -- --configuration production
+
+
+FROM httpd:2.4
+
+# Proxy para WebSocket
+RUN sed -i '/LoadModule proxy_module/s/^#//g' /usr/local/apache2/conf/httpd.conf && \
+    sed -i '/LoadModule proxy_wstunnel_module/s/^#//g' /usr/local/apache2/conf/httpd.conf
+
+# Configurar proxy para WebSocket
+COPY apache-proxy.conf /usr/local/apache2/conf/extra/proxy.conf
+RUN echo "Include conf/extra/proxy.conf" >> /usr/local/apache2/conf/httpd.conf
+
+# Copiar los archivos 
+COPY --from=build /app/dist/app-angular/browser /usr/local/apache2/htdocs/
+
+EXPOSE 80

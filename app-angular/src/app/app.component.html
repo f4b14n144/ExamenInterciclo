@@ -1,0 +1,13 @@
+<div class="container">
+  <h1>{{ title }}</h1>
+  <div class="welcome">
+    <p>Aplicacion de angular con docker y websocket .</p>
+  </div>
+  
+  <div class="websocket-data">
+    <h2>Datos en tiempo real:</h2>
+    <div *ngFor="let msg of messages" class="message">
+      <p><strong>{{ msg.time }}</strong>: {{ msg.message }}</p>
+    </div>
+  </div>
+</div>
