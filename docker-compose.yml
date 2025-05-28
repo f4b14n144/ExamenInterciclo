@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  web:
+    build: ./app-angular
+    ports:
+      - "80:80"
+    depends_on:
+      - websocket-server
+    networks:
+      - app-network
+
+  websocket-server:
+    build: ./websocket-server
+
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
